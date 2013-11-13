@@ -25,8 +25,8 @@
 
 # config section:
 CFG_INVENIO_PREFIX=${CFG_INVENIO_PREFIX:=/opt/invenio}
-CFG_INVENIO_USER=${CFG_INVENIO_USER:=www-data}
-CFG_INVENIO_APACHECTL=${CFG_INVENIO_APACHECTL:=/etc/init.d/apache2}
+CFG_INVENIO_USER=${CFG_INVENIO_USER:=apache}
+CFG_INVENIO_APACHECTL=${CFG_INVENIO_APACHECTL:=/etc/init.d/httpd}
 
 # sanity check: CLI confirmation
 if [[ "$@" != *"--yes-i-know"* ]]; then
@@ -53,7 +53,7 @@ sudo -u $CFG_INVENIO_USER $CFG_INVENIO_PREFIX/bin/dbdump $MYTASKID
 
 # step two: make /opt/invenio tarball:
 echo "[INFO] Snapshotting $CFG_INVENIO_PREFIX..."
-MYFINALNAME=/tmp/$(sudo -u www-data /opt/invenio/bin/inveniocfg --get CFG_DATABASE_NAME)-site-backup-$(date +%Y-%m-%d-%H-%M-%S).tar
+MYFINALNAME=/tmp/$(sudo -u apache /opt/invenio/bin/inveniocfg --get CFG_DATABASE_NAME)-site-backup-$(date +%Y-%m-%d-%H-%M-%S).tar
 sudo -u $CFG_INVENIO_USER tar cfph $MYFINALNAME $CFG_INVENIO_PREFIX/*
 
 # restart Apache:
